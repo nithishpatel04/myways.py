@@ -1,0 +1,71 @@
+const form = document.getElementById('user-form');
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  
+  const url = `https://example.com/api/user?name=${name}&email=${email}&phone=${phone}`;
+  
+  try {
+    const response = await fetch(url, { method: 'GET' });
+    const data = await response.json();
+    
+    if (data.exists) {
+      alert('User Found');
+    } else {
+      const createUrl = 'https://example.com/api/user';
+      const createResponse = await fetch(createUrl, {
+        method: 'POST',
+        body: JSON.stringify({ name, email, phone }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const createData = await createResponse.json();
+      
+      alert('User Created Successfully');
+    }
+  } catch (error) {
+    console.error(error);
+    alert('An error occurred');
+  }
+});
+body {
+  font-family: sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 10px;
+}
+
+input {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid gray;
+}
+
+button {
+  margin-top: 10px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
